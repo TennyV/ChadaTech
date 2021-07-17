@@ -1,0 +1,104 @@
+//
+//  clock.cpp
+//  chadaclock
+//
+//  Created by Tenny Vongtip on 7/14/21.
+//
+
+#include <iostream>
+#include <ctime>
+#include <stdlib.h>
+#include <iomanip>
+
+using namespace std;
+
+void menu() {
+    
+    cout << "1 - Add One Hour" << endl;
+    cout << "2 - Add One Minute" << endl;
+    cout << "3 - Add One Second" << endl;
+    cout << "4 - Exit Program" << endl;
+}
+
+// void clock() FFIX ME
+
+
+
+int main() {
+    // displays the local time in 24 hour format
+    int hh;
+    int mm;
+    int ss;
+    int userInput;
+    
+    time_t now = time(0);
+    
+    tm * ltm = localtime(&now);
+      
+    
+      hh = ltm->tm_hour;
+      mm = ltm->tm_min;
+      ss = ltm->tm_sec;
+      
+      // 12 hour time conversion
+      string AM = "AM";
+      int h = hh;
+    
+      if (h > 12) {
+          h = h - 12;
+          AM = "PM";
+      }
+     
+    /*  cout << std::left << "12-Hour Clock" << "     ";
+
+      // 24 hour time display
+      cout.fill('0');
+      cout << std::right << "24-Hour Clock" << endl;
+      cout << std::left << "  " << h << ":" << setw(2) << mm << ":" << setw(2) << ss << AM << "          ";  // 12 hour clock
+    
+      cout << std::right << ltm->tm_hour << ":";  // 24 hour clock
+      cout << setw(2) << ltm->tm_min << ":";
+      cout << ltm->tm_sec << endl;
+      cout << endl;   */
+
+    do
+        {
+            cout << std::left << "12-Hour Clock" << "     ";
+
+            // 24 hour time display
+            cout.fill('0');
+            cout << std::right << "24-Hour Clock" << endl;
+            cout << std::left << "  " << h << ":" << setw(2) << mm << ":" << setw(2) << ss << AM << "          ";  // 12 hour clock
+          
+            cout << std::right << ltm->tm_hour << ":";  // 24 hour clock
+            cout << setw(2) << ltm->tm_min << ":";
+            cout << ltm->tm_sec << endl;
+            cout << endl;            menu();  // my menu function
+                
+            cout << " " << endl;
+            cout << "Whats the plan?" << endl;
+            cin >> userInput;
+            
+            if (userInput > 4 || userInput < 1) {
+                cout << "invalid input";
+            }
+            if (userInput == 1) {
+            cout << "It works" << endl;
+            }
+            else if (userInput == 2) {
+                cout << "Got it" << endl;
+            }
+            else if (userInput == 3) {
+                cout << "Next" << endl;
+            }
+            else if (userInput == 4) {   // expecting an expression
+                cout << "Goodbye";
+                exit(0);
+            }
+        } while (userInput > 1 || userInput < 4);
+        return userInput;
+        
+    }
+
+
+
