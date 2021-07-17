@@ -12,6 +12,34 @@
 
 using namespace std;
 
+void displayClock (int hour24, int mm, int ss) {
+   // calculate 12 hours from hour24
+   int hour12 = hour24;
+   
+   string AM = "AM";
+    
+    if (hour12 >= 12) {
+          hour12 = hour12 - 12;   // conversion to 12 hour time
+          AM = "PM";
+    }
+    if (hour12 >= 12) {
+        hour12 = hour12 - 12;
+    }
+    if (hour24 >= 24) {
+        hour24 = hour24 -24;
+    }
+  
+        cout.fill('0');
+        cout << std::left << "12-Hour Clock" << "     ";
+        cout << std::right << "24-Hour Clock" << endl;
+        cout << std::left << "  " << hour12 << ":" << setw(2) << mm << ":" << setw(2) << ss << AM << "          ";  // 12 hour clock
+              
+        cout << std::right << hour24 << ":";  // 24 hour clock
+        cout << setw(2) << mm << ":";
+        cout << setw(2) << ss << endl;
+        cout << endl;
+}
+
 void menu() {
     
     cout << "1 - Add One Hour" << endl;
@@ -19,10 +47,6 @@ void menu() {
     cout << "3 - Add One Second" << endl;
     cout << "4 - Exit Program" << endl;
 }
-
-// void clock() FFIX ME
-
-
 
 int main() {
     // displays the local time in 24 hour format
@@ -32,73 +56,58 @@ int main() {
     int userInput;
     
     time_t now = time(0);
-    
     tm * ltm = localtime(&now);
       
     
       hh = ltm->tm_hour;
       mm = ltm->tm_min;
       ss = ltm->tm_sec;
-      
-      // 12 hour time conversion
-      string AM = "AM";
-      int h = hh;
-    
-      if (h > 12) {
-          h = h - 12;
-          AM = "PM";
-      }
-     
-    /*  cout << std::left << "12-Hour Clock" << "     ";
-
-      // 24 hour time display
-      cout.fill('0');
-      cout << std::right << "24-Hour Clock" << endl;
-      cout << std::left << "  " << h << ":" << setw(2) << mm << ":" << setw(2) << ss << AM << "          ";  // 12 hour clock
-    
-      cout << std::right << ltm->tm_hour << ":";  // 24 hour clock
-      cout << setw(2) << ltm->tm_min << ":";
-      cout << ltm->tm_sec << endl;
-      cout << endl;   */
-
-    do
-        {
-            cout << std::left << "12-Hour Clock" << "     ";
-
-            // 24 hour time display
-            cout.fill('0');
-            cout << std::right << "24-Hour Clock" << endl;
-            cout << std::left << "  " << h << ":" << setw(2) << mm << ":" << setw(2) << ss << AM << "          ";  // 12 hour clock
           
-            cout << std::right << ltm->tm_hour << ":";  // 24 hour clock
-            cout << setw(2) << ltm->tm_min << ":";
-            cout << ltm->tm_sec << endl;
-            cout << endl;            menu();  // my menu function
+      do
+        {
+           displayClock(hh, mm, ss);
+           menu();  // my menu function
                 
             cout << " " << endl;
             cout << "Whats the plan?" << endl;
             cin >> userInput;
             
-            if (userInput > 4 || userInput < 1) {
+            if (userInput > 4 || userInput < 1) {  // valid inputs ONLY
                 cout << "invalid input";
             }
             if (userInput == 1) {
-            cout << "It works" << endl;
+               hh = hh + 1;
+                if (hh > 24) {
+                    hh = 0;
+                    }
             }
             else if (userInput == 2) {
-                cout << "Got it" << endl;
+              mm = mm + 1;
+              if (mm == 60) {    // if minutes hits 60, it goes back to 0 +1 to hour
+                 mm = 0;
+                 hh = hh + 1;
+              }
             }
             else if (userInput == 3) {
-                cout << "Next" << endl;
+               ss = ss + 1;
+               if (ss == 60) {  // if seconds hits 60. mm gets +1 to minutes
+                  mm = mm + 1;
+               }
+              if (mm == 60) {   // if minutes hits 60, it goes back to 0 +1 to hour
+                 mm = 0;
+                 hh = hh + 1;
+              }
             }
-            else if (userInput == 4) {   // expecting an expression
+            else if (userInput == 4) {  // exits program
                 cout << "Goodbye";
                 exit(0);
             }
-        } while (userInput > 1 || userInput < 4);
-        return userInput;
+        } while (userInput > 1 || userInput < 4);   // parameters to bring to top
+    
+        return 0;
         
     }
+
 
 
 
